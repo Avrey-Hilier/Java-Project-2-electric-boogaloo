@@ -18,46 +18,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class GamePrep extends JFrame implements KeyListener, ActionListener {
-
-		
-	//GUI setup
-	public GamePrep() {
-
-		//https://www.geeksforgeeks.org/java-close-awt-window/
-		this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.out.println("Ok, shutting down...");
-                
-                String sqlUpdate = "UPDATE HIGHSCORE SET SCORE = ? WHERE NAME = ?";
-                try (PreparedStatement pstmtUpdate = conn.prepareStatement(sqlUpdate)) {
-                    pstmtUpdate.setDouble(1, score);
-                    pstmtUpdate.setString(2, input);
-                    pstmtUpdate.executeUpdate();
-                } catch (Exception f) {
-                    f.printStackTrace();
-                }
-
-                try {
-                    conn.close();
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+	
 	public static void main(String[] args){
 		//declare copies of our character
 		Frog frog;
 		Background background;
+		frog = new Frog(264, 800, 60, 66, "Frog.png");
+		background = new Background(0, 0, 600, 800, "Background.png");
 		Blast1 Blast1Row1[ ] = new Blast1[4];
 		Blast1 Blast1Row2[ ] = new Blast1[4];
 		Blast2 Blast2Row1[ ] = new Blast2[4];
@@ -67,24 +38,6 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 		Log Log1Row3[ ] = new Log[4];
 		Log2 Log2Row1[ ] = new Log2[4];
 		Log2 Log2Row2[ ] = new Log2[4];
-		
-		//GUI variables
-		Container content;
-		JLabel frogLabel, BackgroundLabel;
-		JLabel Blast1Labels[] = new JLabel[8];
-		ImageIcon Blast1Images[] = new ImageIcon[8];
-		JLabel Blast2Labels[] = new JLabel[8];
-		ImageIcon Blast2Images[] = new ImageIcon[8];
-		JLabel Log1Labels[] = new JLabel[12];
-		ImageIcon Log1Images[] = new ImageIcon[12];
-		JLabel Log2Labels[] = new JLabel[8];
-		ImageIcon Log2Images[] = new ImageIcon[8];
-		ImageIcon frogImage, BackgroundImage;
-		JLabel Highscore;
-		
-		//2 buttons
-		JButton startButton;
-		
 		boolean aliveFrog = true;
 		
 		int score = 0;
@@ -92,68 +45,6 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 		String input;
 		
 		Connection conn = null;
-
-		input = JOptionPane.showInputDialog("Enter your name: ");
-        
-        if (input == null || input == "") {
-            input = "Doofus";
-        } 
-        
-		try {
-			//load the database driver
-			Class.forName("org.sqlite.JDBC");
-			System.out.print("Driver Loaded");
-			
-			//create connection string and connect to database
-			String dbURL = "jdbc:sqlite:Scoreboard.db";
-			conn = DriverManager.getConnection(dbURL);
-			
-			if (conn != null) {
-				System.out.println("connected to database");
-				
-				//show meta data for database
-				DatabaseMetaData db = (DatabaseMetaData) conn.getMetaData();
-				System.out.println("Driver Name: " + db.getDriverName());
-				System.out.println("Driver Version: " + db.getDriverVersion());
-				System.out.println("Product Name: " + db.getDatabaseProductName());
-				System.out.println("Product Version: " + db.getDatabaseProductVersion());
-				
-				//create table using prepared statement
-                String sqlCreateTable = "CREATE TABLE IF NOT EXISTS HIGHSCORE " +
-                        "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        " NAME TEXT NOT NULL, " +
-                        " SCORE INT NOT NULL)";
-
-                try (PreparedStatement pstmtCreateTable = conn.prepareStatement(sqlCreateTable)) {
-                	pstmtCreateTable.executeUpdate();
-                	System.out.println("Table Successfully Created");
-                }
-                
-				//insert data using a prepared statement
-                String sqlInsert = "INSERT INTO HIGHSCORE (NAME, SCORE) VALUES (?, ?)";
-                try (PreparedStatement pstmtInsert = conn.prepareStatement(sqlInsert)) {
-
-                	//execute calls to prepared statement
-                	pstmtInsert.setString(1, input);
-                	pstmtInsert.setInt(2, score);
-                	pstmtInsert.executeUpdate();
-                	
-                }
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		frog = new Frog(264, 800, 60, 66, "Frog.png");
-		background = new Background(0, 0, 600, 800, "Background.png");
-		Highscore = new JLabel("Current score: " + score);
-		
-		//set up screen
-		setSize(GameProperties.SCREEN_WIDTH, GameProperties.SCREEN_HEIGHT);
-		content = getContentPane();
-		content.setBackground(Color.gray);
-		setLayout(null);
-		
-		
 
 		int spacing = 0;
 		
@@ -297,7 +188,7 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 							Socket s = server.accept();
 							System.out.println("client connected");
 							
-							ServerService myService = new ServerService (s);
+							ServerService myService = new ServerService (s, frog, Blast1Row1, Blast1Row2, Blast2Row1, Blast2Row2, Log1Row1, Log1Row2, Log1Row3, Log2Row1, Log2Row2);
 							Thread t2 = new Thread(myService);
 							t2.start();
 						}
@@ -313,9 +204,6 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 		});
 		t1.start( );
 
-	}
-		GamePrep myGame = new GamePrep();
-		myGame.setVisible(true);
 	}
 
 
@@ -356,9 +244,9 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 		
 	}
 
-
+	/*
 	public void blastImpact() {
 		aliveFrog = false;
 		startButton.setText("Restart");
-	}
+	}*/
 }

@@ -3,9 +3,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-public class Blast1 extends Sprite implements Runnable{
+public class Blast1 extends Sprite{
 	private Boolean moving;
-	private Thread t;
+	//private Thread t;
 	
 	private JLabel Blast1Label;	
 	private JButton startButton;
@@ -54,7 +54,7 @@ public class Blast1 extends Sprite implements Runnable{
 	public void setGamePrep(GamePrep game) {
 	    this.game = game;
 	}
-	
+	/*
 	public void startThread() {
 		//run will be triggered
 		System.out.println("Current moving: " + this.moving);
@@ -139,6 +139,6 @@ public class Blast1 extends Sprite implements Runnable{
 			}
 			
 		}
-	}
+	}*/
 
 }

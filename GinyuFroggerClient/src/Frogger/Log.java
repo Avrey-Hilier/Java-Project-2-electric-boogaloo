@@ -4,9 +4,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-public class Log extends Sprite implements Runnable{
+public class Log extends Sprite{
 	private Boolean moving;
-	private Thread t;
+	//private Thread t;
 	
 	private JLabel LogLabel;	
 	private JButton startButton;
@@ -49,7 +49,7 @@ public class Log extends Sprite implements Runnable{
 		// TODO Auto-generated constructor stub
 		this.moving = false;
 	}
-	
+	/*
 	public void startThread() {
 		//run will be triggered
 		System.out.println("Current moving: " + this.moving);
@@ -116,5 +116,5 @@ public class Log extends Sprite implements Runnable{
 		
 		//System.out.println("Thread Stopped");
 		
-	}
+	}*/
 }

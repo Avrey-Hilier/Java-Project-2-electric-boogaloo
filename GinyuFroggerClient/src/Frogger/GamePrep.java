@@ -7,6 +7,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -21,6 +26,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class GamePrep extends JFrame implements KeyListener, ActionListener {
+	final int SERVER_PORT = 5556;
+	final int CLIENT_PORT = 5555;
+	
 
 	//declare copies of our character
 	private Frog frog;
@@ -380,6 +388,45 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
             }
         });
 		
+		Thread t1 = new Thread ( new Runnable () {
+			public void run ( ) {
+				synchronized(this) {
+					
+					ServerSocket client;
+					
+					try {
+						
+						client = new ServerSocket(CLIENT_PORT);
+						while(true) {
+							Socket s2;
+							try {
+								s2 = client.accept();
+								ClientService myService = new ClientService (s2, frog, Blast1Row1, Blast1Row2, Blast2Row1, Blast2Row2, Log1Row1, Log1Row2, Log1Row3, Log2Row1, Log2Row2);
+								Thread t2 = new Thread(myService);
+								t2.start();
+									
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							System.out.println("client connected");
+							
+						}
+					
+					
+					
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println("Waiting for server responses...");
+
+					
+				}
+			}
+		});
+		t1.start( );
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	public static void main(String[] args){
@@ -645,78 +692,17 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 			Highscore.setText("Highscore: " + score);
 			
 			aliveFrog = true;
+			
+			Socket s = new Socket("localhost", SERVER_PORT);
+			
+			//Initialize data stream to send data out
+			OutputStream outstream = s.getOutputStream();
+			PrintWriter out = new PrintWriter(outstream);
 
-			for (int i=0; i < Blast1Row1.length; i++) {
-				if ( Blast1Row1[i].getMoving() ) {
-					Blast1Row1[i].stopThread();
-				} else {
-					Blast1Row1[i].startThread();
-				}
-			}
-			
-			for (int i=0; i < Blast1Row2.length; i++) {
-				if ( Blast1Row2[i].getMoving() ) {
-					Blast1Row2[i].stopThread();
-				} else {
-					Blast1Row2[i].startThread();
-				}
-			}
-			
-			for (int i=0; i < Blast2Row1.length; i++) {
-				if ( Blast2Row1[i].getMoving() ) {
-					Blast2Row1[i].stopThread();
-				} else {
-					Blast2Row1[i].startThread();
-				}
-			}
-			
-			for (int i=0; i < Blast2Row2.length; i++) {
-				if ( Blast2Row2[i].getMoving() ) {
-					Blast2Row2[i].stopThread();
-				} else {
-					Blast2Row2[i].startThread();
-				}
-			}
-			
-			for (int i=0; i < Log1Row1.length; i++) {
-				if ( Log1Row1[i].getMoving() ) {
-					Log1Row1[i].stopThread();
-				} else {
-					Log1Row1[i].startThread();
-				}
-			}
-			
-			for (int i=0; i < Log1Row2.length; i++) {
-				if ( Log1Row2[i].getMoving() ) {
-					Log1Row2[i].stopThread();
-				} else {
-					Log1Row2[i].startThread();
-				}
-			}
-			
-			for (int i=0; i < Log1Row3.length; i++) {
-				if ( Log1Row3[i].getMoving() ) {
-					Log1Row3[i].stopThread();
-				} else {
-					Log1Row3[i].startThread();
-				}
-			}
-			
-			for (int i=0; i < Log2Row1.length; i++) {
-				if ( Log2Row1[i].getMoving() ) {
-					Log2Row1[i].stopThread();
-				} else {
-					Log2Row1[i].startThread();
-				}
-			}
-			
-			for (int i=0; i < Log2Row2.length; i++) {
-				if ( Log2Row2[i].getMoving() ) {
-					Log2Row2[i].stopThread();
-				} else {
-					Log2Row2[i].startThread();
-				}
-			}
+			String command = "STARTGAME\n";
+			System.out.println("Sending: " + command);
+			out.println(command);
+			out.flush();
 		}
 		
 		

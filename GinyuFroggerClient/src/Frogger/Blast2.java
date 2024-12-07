@@ -4,9 +4,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-public class Blast2 extends Sprite implements Runnable{
+public class Blast2 extends Sprite{
 	private Boolean moving;
-	private Thread t;
+	//private Thread t;
 	
 	private JLabel Blast2Label;	
 	private JButton startButton;
@@ -49,7 +49,7 @@ public class Blast2 extends Sprite implements Runnable{
 		// TODO Auto-generated constructor stub
 		this.moving = false;
 	}
-	
+	/*
 	public void startThread() {
 		//run will be triggered
 		System.out.println("Current moving: " + this.moving);
@@ -76,14 +76,14 @@ public class Blast2 extends Sprite implements Runnable{
 		if (this.moving) {
 			this.moving = false;
 		}
-	}
+	}*/
 	
 	private GamePrep game;
 
 	public void setGamePrep(GamePrep game) {
 	    this.game = game;
 	}
-
+	/*
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -137,5 +137,5 @@ public class Blast2 extends Sprite implements Runnable{
 			}
 		}
 	}
-	
+	*/
 }
