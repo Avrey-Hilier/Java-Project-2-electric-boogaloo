@@ -78,7 +78,10 @@ public class ServerService implements Runnable {
 		int y = frog.getY();
 		int x = frog.getX();
 		if (command.equals("MOVEFROG")) {
+			int playerNo = in.nextInt();
+			
 			String direction = in.next();
+			
 			if (direction.equals("UP")) {
 				y -= GameProperties.CHARACTER_STEP;
 
@@ -95,7 +98,20 @@ public class ServerService implements Runnable {
 			
 			frog.setY(y);
 			frog.setX(x);
+			
+			Socket s2 = new Socket("localhost", CLIENT_PORT);
+			
+			//Initialize data stream to send data out
+			OutputStream outstream = s2.getOutputStream();
+			PrintWriter out = new PrintWriter(outstream);
+			String commandOut = "FROG "+playerNo+" POSTION "+x+" "+y+"\n";
+			System.out.println("Sending: " + commandOut);
+			out.println(commandOut);
+			out.flush();
+				
+			s2.close();
 		} else if (command.equals("GETFROG")) {
+			
 			
 		} else if (command.equals("STARTGAME")) {
 				

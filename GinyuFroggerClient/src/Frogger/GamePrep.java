@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -26,8 +27,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class GamePrep extends JFrame implements KeyListener, ActionListener {
-	final int SERVER_PORT = 5556;
-	final int CLIENT_PORT = 5555;
+	final static int CLIENT_PORT = 5656;
+	final static int SERVER_PORT = 5556;
 	
 
 	//declare copies of our character
@@ -401,7 +402,7 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 							Socket s2;
 							try {
 								s2 = client.accept();
-								ClientService myService = new ClientService (s2, frog, Blast1Row1, Blast1Row2, Blast2Row1, Blast2Row2, Log1Row1, Log1Row2, Log1Row3, Log2Row1, Log2Row2);
+								ClientService myService = new ClientService (s2, frog, frogLabel, Blast1Row1, Blast1Row2, Blast2Row1, Blast2Row2, Log1Row1, Log1Row2, Log1Row3, Log2Row1, Log2Row2, startButton, Blast1Labels, Blast2Labels, Log1Labels, Log2Labels, Highscore);
 								Thread t2 = new Thread(myService);
 								t2.start();
 									
@@ -426,7 +427,41 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 			}
 		});
 		t1.start( );
-		
+		/*
+		Thread t2 = new Thread(new Runnable ( ) {
+			public void run() {
+				synchronized(this) {
+					while(true) {
+						Socket s3;
+						try {
+							s3 = new Socket("localhost", SERVER_PORT);
+						
+						
+						OutputStream outstream = s3.getOutputStream();
+						PrintWriter out = new PrintWriter(outstream);
+						
+						String command = "GETFROG\n";
+						System.out.println("Sending " + command);
+						out.println(command);
+						out.flush();
+						
+						s3.close();
+						Thread.sleep(500);
+						} catch (UnknownHostException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		});
+		*/
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	public static void main(String[] args){
@@ -498,11 +533,28 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 		//get current position
 		int x = frog.getX();
 		int y = frog.getY();
-		
+		Socket s;
 		//detect direction
 		if ( e.getKeyCode() == KeyEvent.VK_UP ) {
 			
-			y -= GameProperties.CHARACTER_STEP;
+			try {
+				s = new Socket("localhost", SERVER_PORT);
+			
+			
+				//Initialize data stream to send data out
+				OutputStream outstream = s.getOutputStream();
+				PrintWriter out = new PrintWriter(outstream);
+
+				String command = "MOVEFROG 1 UP\n";
+				System.out.println("Sending: " + command);
+				out.println(command);
+				out.flush();
+				s.close();
+			
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 			if ( y + frog.getHeight() <=  0) {
 
@@ -531,7 +583,26 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 			
 		} else if ( e.getKeyCode() == KeyEvent.VK_DOWN ) {
 			
-			y += GameProperties.CHARACTER_STEP;
+
+			try {
+				s = new Socket("localhost", SERVER_PORT);
+			
+			
+				//Initialize data stream to send data out
+				OutputStream outstream = s.getOutputStream();
+				PrintWriter out = new PrintWriter(outstream);
+
+				String command = "MOVEFROG 1 DOWN\n";
+				System.out.println("Sending: " + command);
+				out.println(command);
+				out.flush();
+				s.close();
+			
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 			
 			if ( y >= GameProperties.SCREEN_HEIGHT) {
 				
@@ -560,7 +631,26 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 			
 		} else if ( e.getKeyCode() == KeyEvent.VK_LEFT ) {
 			
-			x -= GameProperties.CHARACTER_STEP;
+
+			try {
+				s = new Socket("localhost", SERVER_PORT);
+			
+			
+				//Initialize data stream to send data out
+				OutputStream outstream = s.getOutputStream();
+				PrintWriter out = new PrintWriter(outstream);
+
+				String command = "MOVEFROG 1 LEFT\n";
+				System.out.println("Sending: " + command);
+				out.println(command);
+				out.flush();
+				s.close();
+			
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 			
 			if (x + frog.getWidth() <= 0) {
 
@@ -589,7 +679,26 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 			
 		}  else if ( e.getKeyCode() == KeyEvent.VK_RIGHT ) {
 			
-			x += GameProperties.CHARACTER_STEP;
+
+			try {
+				s = new Socket("localhost", SERVER_PORT);
+			
+			
+				//Initialize data stream to send data out
+				OutputStream outstream = s.getOutputStream();
+				PrintWriter out = new PrintWriter(outstream);
+
+				String command = "MOVEFROG 1 RIGHT\n";
+				System.out.println("Sending: " + command);
+				out.println(command);
+				out.flush();
+				s.close();
+			
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 			
 			if ( x >= GameProperties.SCREEN_WIDTH ) {
 
@@ -693,7 +802,10 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 			
 			aliveFrog = true;
 			
-			Socket s = new Socket("localhost", SERVER_PORT);
+			Socket s;
+			try {
+				s = new Socket("localhost", SERVER_PORT);
+			
 			
 			//Initialize data stream to send data out
 			OutputStream outstream = s.getOutputStream();
@@ -703,6 +815,10 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 			System.out.println("Sending: " + command);
 			out.println(command);
 			out.flush();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 		

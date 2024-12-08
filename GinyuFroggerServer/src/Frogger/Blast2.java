@@ -107,10 +107,6 @@ public class Blast2 extends Sprite implements Runnable{
 			this.setImage("Kaboom.png");
 
 			frog.setImage("Kaboom.png");
-			
-			if (this.game !=null) {
-				game.blastImpact();
-			}
 		}
 	}
 	
