@@ -427,7 +427,7 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 			}
 		});
 		t1.start( );
-		/*
+		
 		Thread t2 = new Thread(new Runnable ( ) {
 			public void run() {
 				synchronized(this) {
@@ -440,12 +440,13 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 						OutputStream outstream = s3.getOutputStream();
 						PrintWriter out = new PrintWriter(outstream);
 						
-						String command = "GETFROG\n";
+						String command = "GETBLAST\n";
 						System.out.println("Sending " + command);
 						out.println(command);
 						out.flush();
 						
 						s3.close();
+						
 						Thread.sleep(500);
 						} catch (UnknownHostException e) {
 							// TODO Auto-generated catch block
@@ -461,7 +462,9 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 				}
 			}
 		});
-		*/
+		
+		t2.start();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	public static void main(String[] args){

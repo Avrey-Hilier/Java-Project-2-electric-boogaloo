@@ -110,25 +110,69 @@ public class ServerService implements Runnable {
 			out.flush();
 				
 			s2.close();
-		} else if (command.equals("GETFROG")) {
+		} else if (command.equals("GETBLAST")) {
+			int blastx=0;
+			int blasty=0;
+			Socket s5 = new Socket("localhost", CLIENT_PORT);
 			
+			for (int i = 0; i < 4; i++) {
+				blastx = Blast1Row1[i].getX();
+				blasty = Blast1Row1[i].getY();
+				
+				//Initialize data stream to send data out
+				OutputStream outstream = s5.getOutputStream();
+				PrintWriter out = new PrintWriter(outstream);
+				String commandOut = "SETBLAST1ROW1 "+i+" "+blastx+" "+blasty+"\n";
+				System.out.println("Sending: " + commandOut);
+				out.println(commandOut);
+				out.flush();
+			}
+			
+			for (int i = 0; i < 4; i++) {
+				blastx = Blast1Row2[i].getX();
+				blasty = Blast1Row2[i].getY();
+				
+				//Initialize data stream to send data out
+				OutputStream outstream = s5.getOutputStream();
+				PrintWriter out = new PrintWriter(outstream);
+				String commandOut = "SETBLAST1ROW2 "+i+" "+blastx+" "+blasty+"\n";
+				System.out.println("Sending: " + commandOut);
+				out.println(commandOut);
+				out.flush();
+			}
+			
+			for (int i = 0; i < 4; i++) {
+				blastx = Blast2Row1[i].getX();
+				blasty = Blast2Row1[i].getY();
+				
+				//Initialize data stream to send data out
+				OutputStream outstream = s5.getOutputStream();
+				PrintWriter out = new PrintWriter(outstream);
+				String commandOut = "SETBLAST2ROW1 "+i+" "+blastx+" "+blasty+"\n";
+				System.out.println("Sending: " + commandOut);
+				out.println(commandOut);
+				out.flush();
+			}
+			
+			for (int i = 0; i < 4; i++) {
+				blastx = Blast2Row2[i].getX();
+				blasty = Blast2Row2[i].getY();
+				
+				//Initialize data stream to send data out
+				OutputStream outstream = s5.getOutputStream();
+				PrintWriter out = new PrintWriter(outstream);
+				String commandOut = "SETBLAST2ROW2 "+i+" "+blastx+" "+blasty+"\n";
+				System.out.println("Sending: " + commandOut);
+				out.println(commandOut);
+				out.flush();
+			}
+			
+			s5.close();
 			
 		} else if (command.equals("STARTGAME")) {
 				
 				if (frog.getY() != 800) {
 					System.out.println("An additional coin has been inserted. You'll get it this time!");
-					/*
-					score -= 50;
-					
-					String sqlUpdate = "UPDATE HIGHSCORE SET SCORE = ? WHERE NAME = ?";
-			        try (PreparedStatement pstmtUpdate = conn.prepareStatement(sqlUpdate)) {
-
-			        	pstmtUpdate.setDouble(1, score);
-			        	pstmtUpdate.setString(2, input);
-			        	pstmtUpdate.executeUpdate();
-			        } catch (Exception f){
-			        	f.printStackTrace();
-			        }*/
 				}
 				
 				System.out.println("Get to hopping!");	

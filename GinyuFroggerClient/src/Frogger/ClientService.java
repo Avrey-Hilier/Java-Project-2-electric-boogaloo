@@ -110,6 +110,35 @@ public class ClientService implements Runnable {
 			FrogLabel.setLocation(Frog.getX(), Frog.getY());
 			
 			System.out.println("Player "+playerNo+" "+playerAction + " "+Frog.getX()+", "+Frog.getY());
+		}else if (command.equals("SETBLAST1ROW1")) {
+			int position = in.nextInt();
+			
+			Blast1Row1[position].setX(in.nextInt());
+			Blast1Row1[position].setY(in.nextInt());
+			
+			Blast1Labels[position].setLocation(Blast1Row1[position].getX(), Blast1Row1[position].getY());
+			
+		} else if (command.equals("SETBLAST1ROW2")) {
+			int position = in.nextInt();
+			
+			Blast1Row2[position].setX(in.nextInt());
+			Blast1Row2[position].setY(in.nextInt());
+			
+			Blast1Labels[position + 4].setLocation(Blast1Row2[position].getX(), Blast1Row2[position].getY());
+		} else if (command.equals("SETBLAST2ROW1")) {
+			int position = in.nextInt();
+			
+			Blast2Row1[position].setX(in.nextInt());
+			Blast2Row1[position].setY(in.nextInt());
+			
+			Blast2Labels[position].setLocation(Blast2Row1[position].getX(), Blast2Row1[position].getY());
+		} else if (command.equals("SETBLAST2ROW2")) {
+			int position = in.nextInt();
+			
+			Blast2Row2[position].setX(in.nextInt());
+			Blast2Row2[position].setY(in.nextInt());
+			
+			Blast2Labels[position + 4].setLocation(Blast2Row2[position].getX(), Blast2Row2[position].getY());
 		}
 	}
 }
