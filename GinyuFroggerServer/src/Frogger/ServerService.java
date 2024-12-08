@@ -251,29 +251,75 @@ public class ServerService implements Runnable {
 						Log2Row2[i].startThread();
 					}
 				}
-		}
-	
-		
-		if ( command.equals("PLAYER")) {
-			int playerNo = in.nextInt();
-			String playerAction = in.next();
-			System.out.println("Player "+playerNo+" moves "+playerAction);
+		}else if (command.equals("GETLOG")) {
+			int Logx=0;
+			int Logy=0;
+			Socket s6 = new Socket("localhost", CLIENT_PORT);
 			
-			
-			//send a response
-			Socket s2 = new Socket("localhost", CLIENT_PORT);
-			
-			//Initialize data stream to send data out
-			OutputStream outstream = s2.getOutputStream();
-			PrintWriter out = new PrintWriter(outstream);
-
-			String commandOut = "PLAYER "+playerNo+" POSTION 500 400\n";
-			System.out.println("Sending: " + commandOut);
-			out.println(commandOut);
-			out.flush();
+			for (int i = 0; i < 4; i++) {
+				Logx = Log1Row1[i].getX();
+				Logy = Log1Row1[i].getY();
 				
-			s2.close();
-
+				//Initialize data stream to send data out
+				OutputStream outstream = s6.getOutputStream();
+				PrintWriter out = new PrintWriter(outstream);
+				String commandOut = "SETLOG1ROW1 "+i+" "+Logx+" "+Logy+"\n";
+				System.out.println("Sending: " + commandOut);
+				out.println(commandOut);
+				out.flush();
+			}
+			for (int i = 0; i < 4; i++) {
+				Logx = Log1Row2[i].getX();
+				Logy = Log1Row2[i].getY();
+				
+				//Initialize data stream to send data out
+				OutputStream outstream = s6.getOutputStream();
+				PrintWriter out = new PrintWriter(outstream);
+				String commandOut = "SETLOG1ROW2 "+i+" "+Logx+" "+Logy+"\n";
+				System.out.println("Sending: " + commandOut);
+				out.println(commandOut);
+				out.flush();
+			}
+			
+			for (int i = 0; i < 4; i++) {
+				Logx = Log1Row3[i].getX();
+				Logy = Log1Row3[i].getY();
+				
+				//Initialize data stream to send data out
+				OutputStream outstream = s6.getOutputStream();
+				PrintWriter out = new PrintWriter(outstream);
+				String commandOut = "SETLOG1ROW3 "+i+" "+Logx+" "+Logy+"\n";
+				System.out.println("Sending: " + commandOut);
+				out.println(commandOut);
+				out.flush();
+			}
+			
+			for (int i = 0; i < 4; i++) {
+				Logx = Log2Row1[i].getX();
+				Logy = Log2Row1[i].getY();
+				
+				//Initialize data stream to send data out
+				OutputStream outstream = s6.getOutputStream();
+				PrintWriter out = new PrintWriter(outstream);
+				String commandOut = "SETLOG2ROW1 "+i+" "+Logx+" "+Logy+"\n";
+				System.out.println("Sending: " + commandOut);
+				out.println(commandOut);
+				out.flush();
+			}
+			
+			for (int i = 0; i < 4; i++) {
+				Logx = Log2Row2[i].getX();
+				Logy = Log2Row2[i].getY();
+				
+				//Initialize data stream to send data out
+				OutputStream outstream = s6.getOutputStream();
+				PrintWriter out = new PrintWriter(outstream);
+				String commandOut = "SETLOG2ROW2 "+i+" "+Logx+" "+Logy+"\n";
+				System.out.println("Sending: " + commandOut);
+				out.println(commandOut);
+				out.flush();
+			}
+			s6.close();
 		}
 	}
 }

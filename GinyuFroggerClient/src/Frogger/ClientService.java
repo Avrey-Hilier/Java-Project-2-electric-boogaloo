@@ -139,6 +139,46 @@ public class ClientService implements Runnable {
 			Blast2Row2[position].setY(in.nextInt());
 			
 			Blast2Labels[position + 4].setLocation(Blast2Row2[position].getX(), Blast2Row2[position].getY());
+		} else if (command.equals("SETLOG1ROW1")) {
+			int position = in.nextInt();
+			
+			Log1Row1[position].setX(in.nextInt());
+			Log1Row1[position].setY(in.nextInt());
+			
+			Log1Labels[position].setLocation(Log1Row1[position].getX(), Log1Row1[position].getY());
+			
+		}else if (command.equals("SETLOG1ROW2")) {
+			int position = in.nextInt();
+			
+			Log1Row2[position].setX(in.nextInt());
+			Log1Row2[position].setY(in.nextInt());
+			
+			Log1Labels[position + 4].setLocation(Log1Row2[position].getX(), Log1Row2[position].getY());
+			
+		}else if (command.equals("SETLOG1ROW3")) {
+			int position = in.nextInt();
+			
+			Log1Row3[position].setX(in.nextInt());
+			Log1Row3[position].setY(in.nextInt());
+			
+			Log1Labels[position + 8].setLocation(Log1Row3[position].getX(), Log1Row3[position].getY());
+			
+		}else if (command.equals("SETLOG2ROW1")) {
+			int position = in.nextInt();
+			
+			Log2Row1[position].setX(in.nextInt());
+			Log2Row1[position].setY(in.nextInt());
+			
+			Log2Labels[position].setLocation(Log2Row1[position].getX(), Log2Row1[position].getY());
+			
+		}else if (command.equals("SETLOG2ROW2")) {
+			int position = in.nextInt();
+			
+			Log2Row2[position].setX(in.nextInt());
+			Log2Row2[position].setY(in.nextInt());
+			
+			Log2Labels[position+ 4].setLocation(Log2Row2[position].getX(), Log2Row2[position].getY());
+			
 		}
 	}
 }

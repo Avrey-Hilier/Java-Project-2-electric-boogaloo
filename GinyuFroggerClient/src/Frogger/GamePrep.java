@@ -445,6 +445,11 @@ public class GamePrep extends JFrame implements KeyListener, ActionListener {
 						out.println(command);
 						out.flush();
 						
+						command = "GETLOG\n";
+						System.out.println("Sending " + command);
+						out.println(command);
+						out.flush();
+						
 						s3.close();
 						
 						Thread.sleep(500);
